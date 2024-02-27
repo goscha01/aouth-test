@@ -4,6 +4,11 @@ const keys = require('./keys')
 const User = require('../models/user-model');
 
 
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+})
+
+
 passport.use(new GoogleStrategy({
     // OPTIONS FOR THE GOOGLE STRATEGY
     callbackURL:'/auth/google/redirect',
@@ -14,12 +19,14 @@ passport.use(new GoogleStrategy({
     User.findOne({googleId: profile.id}).then((currentUser) => {
         if(currentUser){
             console.log('esixting user : ' + currentUser);
+            done(null, currentUser);
         } else {
             new User({
                 username: profile.displayName,
                 googleId: profile.id
             }).save().then((newUser) => {
                 console.log('new user created: ' + newUser);
+                done(null, newUser);
             })
         }
     })
