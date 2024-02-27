@@ -42,9 +42,13 @@
 <body>
     <nav>
         <ul>
-            <li><a href="/auth/logout">Logout</a></li>
-            <li><a href="/auth/login">Login</a></li>
-            <li><a href="/">Homepage</a></li>
+            <% if (user) {%>
+                <li><a href="/auth/logout">Logout</a></li>
+                <% } else { %>
+                <li><a href="/auth/login">Login</a></li>
+                <% } %>
+                <li><a href="/">Homepage</a></li>
+                <li><a href="/profile">Profile</a></li>
         </ul>
     </nav>
     <header>
@@ -52,7 +56,8 @@
         <h2>Homepage</h2>
     </header>
     <main>
-        <p>'you are logged in, this is your profilw - ', <%= user.username %></p>
+        <img src=<%= user.thumbnail %> />
+        <p>'you are logged in, this is your profilw - ', <%= user.username %> <%= user.thumbnail %></p>
     </main>
 </body>
 </html>

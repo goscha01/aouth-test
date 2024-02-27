@@ -21,6 +21,7 @@ passport.use(new GoogleStrategy({
     clientSecret: keys.google.clientSecret
 }, (accesToken, refreshToken, profile, done) => {
     // check if user allready exists in DB
+    console.log(profile)
     User.findOne({googleId: profile.id}).then((currentUser) => {
         if(currentUser){
             console.log('esixting user : ' + currentUser);
@@ -28,7 +29,9 @@ passport.use(new GoogleStrategy({
         } else {
             new User({
                 username: profile.displayName,
-                googleId: profile.id
+                googleId: profile.id,
+                thumbnail: profile._json.picture
+                
             }).save().then((newUser) => {
                 console.log('new user created: ' + newUser);
                 done(null, newUser);
