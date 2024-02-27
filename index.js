@@ -1,5 +1,6 @@
 const express = require('express');
 const authRoutes = require('./routes/auth-routs');
+const profileRoutes = require('./routes/profile-routes');
 const passportSetup = require('./config/pasport-setup');
 const mongoose = require('mongoose');
 const keys = require('./config/keys');
@@ -13,7 +14,7 @@ app.set('view engine', 'ejs');
 
 app.use(cookieSession({
     maxAge: 24 * 60 * 60 *1000,
-    keys: [keys.session.cookieSession]
+    keys: [keys.session.cookieKey]
 }))
 
 // initialize passport
@@ -29,6 +30,7 @@ mongoose.connect(keys.mongodb.dbURI)
 
 // set up routes
 app.use('/auth', authRoutes);
+app.use('/profile', profileRoutes);
 
 // create home route
 app.get('/', (req, res) => {
